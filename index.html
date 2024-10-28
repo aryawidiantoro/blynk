@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Kelembaban dari Blynk</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        text-align: center;
+        padding: 20px;
+      }
+      h1 {
+        color: #333;
+      }
+      .data {
+        margin: 20px 0;
+        padding: 10px;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Data Kelembaban Tanah</h1>
+    <div id="kelembaban1" class="data">Kelembaban 1: 0%</div>
+    <div id="kelembaban2" class="data">Kelembaban 2: 0%</div>
+    <div id="kelembaban3" class="data">Kelembaban 3: 0%</div>
+    <div id="kelembaban4" class="data">Kelembaban 4: 0%</div>
+    <div id="rata-rata" class="data">Rata-rata: 0%</div>
+
+    <script>
+      const blynkToken = "duKOpwRdT2HL9F02YhfTLh2ENI8yS5rQ"; // Ganti dengan token Blynk Anda
+      const pins = [0, 1, 2, 3, 4]; // Virtual pins untuk kelembaban dan rata-rata
+
+      function fetchData(pin, elementId, label) {
+        const url = `https://blynk.cloud/external/api/get?token=${blynkToken}&pin=${pin}`;
+        fetch(url)
+          .then((response) => response.text())
+          .then((data) => {
+            document.getElementById(elementId).innerText = `${label}: ${data}%`;
+          })
+          .catch((error) => console.error("Error fetching data:", error));
+      }
+
+      function updateData() {
+        fetchData(pins[0], "kelembaban1", "Kelembaban 1");
+        fetchData(pins[1], "kelembaban2", "Kelembaban 2");
+        fetchData(pins[2], "kelembaban3", "Kelembaban 3");
+        fetchData(pins[3], "kelembaban4", "Kelembaban 4");
+        fetchData(pins[4], "rata-rata", "Rata-rata");
+      }
+
+      setInterval(updateData, 10000); // Ambil data setiap 10 detik
+      updateData(); // Ambil data saat halaman dimuat
+    </script>
+  </body>
+</html>
